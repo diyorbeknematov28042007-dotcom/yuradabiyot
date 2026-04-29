@@ -35,10 +35,17 @@ async def check_user_subscribed(bot, user_id: int):
     not_subscribed = []
     for ch in channels:
         try:
-            member = await bot.get_chat_member(ch["id"], user_id)
+            # @ belgisini qo'shish
+            channel_id = ch["id"]
+            if not channel_id.startswith("-") and not channel_id.startswith("@"):
+                channel_id = "@" + channel_id
+
+            member = await bot.get_chat_member(channel_id, user_id)
             if member.status in ("left", "kicked", "banned"):
                 not_subscribed.append(ch)
-        except Exception:
+        except Exception as e:
+            # Kanal topilmasa yoki xato bo'lsa — o'tkazib yuborish
+            print(f"Kanal tekshirishda xato {ch['id']}: {e}")
             not_subscribed.append(ch)
 
     return len(not_subscribed) == 0, not_subscribed
