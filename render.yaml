@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: YurAdabiyot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_IDS
+        value: 6206932601,8013328081
+      - key: DATABASE_URL
+        sync: false
